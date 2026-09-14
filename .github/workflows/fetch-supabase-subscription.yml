@@ -1,0 +1,28 @@
+name: Fetch Supabase Subscription Every 6h7m
+
+on:
+  schedule:
+    - cron: "7 0,6,12,18 * * *" # UTC 00:07, 06:07, 12:07, 18:07
+  workflow_dispatch:
+
+jobs:
+  fetch_subscription:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show UTC time
+        run: date -u
+
+      - name: Fetch subscription data from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          curl --fail --silent --show-error -X GET "$SUPABASE_URL/rest/v1/subscription?select=*" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            -H "Accept: application/json" \
+            -o subscription-data.json
+
+      - name: Show fetched subscription data
+        run: cat subscription-data.json

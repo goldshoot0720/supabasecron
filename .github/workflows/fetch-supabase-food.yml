@@ -1,0 +1,28 @@
+name: Fetch Supabase Food Every 6h6m
+
+on:
+  schedule:
+    - cron: "6 0,6,12,18 * * *" # UTC 00:06, 06:06, 12:06, 18:06
+  workflow_dispatch:
+
+jobs:
+  fetch_food:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show UTC time
+        run: date -u
+
+      - name: Fetch food data from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          curl --fail --silent --show-error -X GET "$SUPABASE_URL/rest/v1/food?select=*" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            -H "Accept: application/json" \
+            -o food-data.json
+
+      - name: Show fetched food data
+        run: cat food-data.json
