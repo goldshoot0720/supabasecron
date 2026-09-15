@@ -1,0 +1,28 @@
+name: Credit 鋒兄銀行 Daily
+
+on:
+  schedule:
+    # 00:00 Asia/Taipei (UTC+8)
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  credit_feng_brother_bank:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Credit 鋒兄銀行
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error \
+            -X POST "$SUPABASE_URL/rest/v1/rpc/credit_feng_brother_bank" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}'
