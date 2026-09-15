@@ -20,6 +20,7 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+#variable_conflict use_column
 declare
   taiwan_today date := (now() at time zone 'Asia/Taipei')::date;
 begin
