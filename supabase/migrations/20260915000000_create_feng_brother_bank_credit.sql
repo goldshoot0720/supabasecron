@@ -30,13 +30,13 @@ begin
   on conflict (name) do nothing;
 
   -- This condition makes retries and manual workflow runs idempotent for a day.
-  update public.bank_accounts
+  update public.bank_accounts as account
   set
-    balance = balance + 33,
+    balance = account.balance + 33,
     last_credit_date = taiwan_today,
     updated_at = now()
-  where name = '鋒兄銀行'
-    and last_credit_date is distinct from taiwan_today;
+  where account.name = '鋒兄銀行'
+    and account.last_credit_date is distinct from taiwan_today;
 
   return query
   select bank_accounts.name, bank_accounts.balance, bank_accounts.last_credit_date
