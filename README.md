@@ -17,9 +17,8 @@ Both workflows can also be run manually from the Actions tab.
 Set these repository secrets before enabling the scheduled workflows:
 
 - `SUPABASE_URL` — the URL of the Supabase project.
-- `SUPABASE_KEY` — a key with read access to the `food` and `subscription` tables.
-- `SUPABASE_SERVICE_ROLE_KEY` — the Supabase service-role key used only by the
-  daily bank-credit workflow. Do not expose this key in browser code.
+- `SUPABASE_KEY` — the Supabase service-role key used by these server-side
+  workflows. Do not expose this key in browser code.
 
 Each run fetches the table's JSON response and writes it to the workflow log. The response is not committed back to the repository.
 
